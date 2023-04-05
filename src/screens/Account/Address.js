@@ -21,16 +21,18 @@ export default function Address() {
 
   const [addresses, setAddresses] = useState(""); //segun el curso el valor inicial es null
 
+  const [reloadAdress, setReloadAdress] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
+      setAddresses("");
       (async () => {
         const response = await getAddressesApi(auth);
         setAddresses(response);
+        setReloadAdress(false);
       })();
-    }, [])
+    }, [reloadAdress])
   );
-
-  //console.log("addresses--->", addresses);
 
   return (
     <ScrollView style={styles.container}>
@@ -51,7 +53,10 @@ export default function Address() {
       ) : (
         <>
           <Text style={styles.noAddressText}>Listado de direcciones</Text>
-          <AddressList addresses={addresses} />
+          <AddressList
+            addresses={addresses}
+            setReloadAdress={setReloadAdress}
+          />
         </>
       )}
     </ScrollView>

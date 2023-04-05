@@ -2,9 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { View, Text, StyleSheet } from "react-native";
-import Home from "../screens/Home";
+import ProductStack from "./ProductStack";
 import Favorites from "../screens/Favorites";
-import Account from "../screens/Account/Account";
 import Cart from "../screens/Cart";
 import AccountStack from "./AccountStack";
 //styles
@@ -25,10 +24,11 @@ export default function AppNavigation() {
         })}
       >
         <Tab.Screen
-          name="home"
-          component={Home}
+          name="product-stack"
+          component={ProductStack}
           options={{
             title: "Inicio",
+            tabBarActiveTintColor: "#e91e63",
           }}
         />
         <Tab.Screen
@@ -60,7 +60,7 @@ export default function AppNavigation() {
 function setIcon(route, routeStatus) {
   let iconName = "";
   switch (route.name) {
-    case "home":
+    case "product-stack":
       iconName = "home";
       break;
     case "favorites":
@@ -86,7 +86,5 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 20,
     color: colors.fontLight,
-
-    //backgroundColor: colors.bgDark,
   },
 });

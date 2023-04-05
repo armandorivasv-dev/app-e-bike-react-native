@@ -1,22 +1,58 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput, Button } from "react-native-paper";
 //import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { addAddressApi } from "../../api/address";
+import {
+  addAddressApi,
+  getAddressesApi,
+  getAddressApi,
+  updateAddressApi,
+} from "../../api/address";
 import useAuth from "../../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 
 //styles
 import { formStyle } from "../../styles";
 
-export default function AddAddress() {
+export default function AddAddress(props) {
+  const {
+    route: { params },
+  } = props;
+
   const [loading, setLoading] = useState(false);
+
+  const [newAddress, setNewAddress] = useState(true);
 
   const { auth } = useAuth();
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      if (params?.idAddress) {
+        setNewAddress(false);
+        navigation.setOptions({ title: "Actualizar dirección" });
+        const response = await getAddressApi(auth, params.idAddress);
+        await formik.setFieldValue("id", response.data.id);
+        await formik.setFieldValue("title", response.data.attributes.title);
+        await formik.setFieldValue(
+          "name_lastname",
+          response.data.attributes.name_lastname
+        );
+        await formik.setFieldValue("address", response.data.attributes.address);
+        await formik.setFieldValue(
+          "postal_code",
+          response.data.attributes.postal_code
+        );
+        await formik.setFieldValue("city", response.data.attributes.city);
+        await formik.setFieldValue("state", response.data.attributes.state);
+        await formik.setFieldValue("country", response.data.attributes.country);
+        await formik.setFieldValue("phone", response.data.attributes.phone);
+      }
+    })();
+  }, [params]);
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -25,15 +61,16 @@ export default function AddAddress() {
       setLoading(true);
 
       try {
-        await addAddressApi(auth, formData);
-        //  console.log("auth--->", auth);
-        //  console.log("formdata--->", formData);
-        // navigation.goBack();
+        if (newAddress) {
+          await addAddressApi(auth, formData);
+        } else {
+          await updateAddressApi(auth, formData);
+        }
+        navigation.goBack();
       } catch (error) {
         console.log(error);
       }
 
-      // console.log("formData", formData);
       setLoading(false);
     },
   });
@@ -104,7 +141,7 @@ export default function AddAddress() {
           onPress={formik.handleSubmit}
           loading={loading}
         >
-          Crear dirección
+          {newAddress ? "Crear dirección" : "Actualizar dirección"}
         </Button>
       </View>
     </ScrollView>

@@ -4,7 +4,7 @@ import Menu from "./Menu";
 
 export default function UserInfo(props) {
   const { user } = props;
-  console.log("UserInfo - user -->", user);
+  //console.log("UserInfo - user -->", user);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenido, </Text>

@@ -1,18 +1,19 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
-export default function Home() {
+export default function CartNoProducts() {
   return (
     <View style={styles.container}>
-      <Text>in Home</Text>
+      <Text style={styles.title}>No hay productos en el carrito!!!</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 18,
   },
 });
