@@ -5,8 +5,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Toast from "react-native-root-toast";
 import { CLAVE_PUBLICABLE } from "../../utils/constans";
-import { paymentCartApi } from "../../api/cart";
+import { paymentCartApi, deleteCartApi } from "../../api/cart";
 import useAuth from "../../hooks/useAuth";
+import { size } from "lodash";
+import { useNavigation } from "@react-navigation/native";
 
 //const stripe = require("stripe-client")(STRIPE_CLAVE_PUBLICABLE_KEY);
 
@@ -20,6 +22,8 @@ import { formStyle } from "../../styles";
 
 export default function CartPayment(props) {
   const { totalPayment, products, selectedAddress } = props;
+
+  const navigation = useNavigation();
 
   // console.log("products", JSON.stringify(products, null, 4));
   // console.log("selectedAddress", selectedAddress);
@@ -48,7 +52,18 @@ export default function CartPayment(props) {
           products,
           selectedAddress
         );
-        console.log("response", JSON.stringify(response, null, 4));
+        if (size(response) > 0) {
+          await deleteCartApi();
+          console.log("Eliminar carrito");
+          navigation.navigate("account-stack", { screen: "orders" });
+        } else {
+          Toast.show("Error al realizar el pago", {
+            position: Toast.positions.CENTER,
+          });
+          setLoading(false);
+        }
+
+        //console.log("response", JSON.stringify(response, null, 4));
         // Toast.show("Pago exitoso", {
         //   position: Toast.positions.CENTER,
         // });

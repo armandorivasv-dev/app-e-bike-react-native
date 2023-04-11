@@ -122,13 +122,23 @@ export const paymentCartApi = async (auth, tokenStripe, products, address) => {
       body: JSON.stringify({
         tokenStripe,
         products,
-        user: auth.idUser,
+        idUser: auth.idUser,
         addressShipping,
       }),
     };
     const result = await fetch(url, params);
     //console.log("result in cart.js", result);
     return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const deleteCartApi = async () => {
+  try {
+    await AsyncStorage.removeItem(CART);
+    return true;
   } catch (error) {
     console.log(error);
     return null;

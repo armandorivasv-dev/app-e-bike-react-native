@@ -11,6 +11,7 @@ import CartNoProducts from "../components/Cart/CartNoProducts";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CartList from "../components/Cart/CartList";
 import CartAddressesList from "../components/Cart/CartAddressesList";
+import Search from "../components/Search/Search";
 
 //styles
 import colors from "../styles/colors";
@@ -35,7 +36,7 @@ export default function Cart() {
 
   // console.log("reloadCart", reloadCart);
 
-  // console.log("products", products);
+  console.log("products in Cart.js", JSON.stringify(products, null, 4));
 
   useFocusEffect(
     useCallback(() => {
@@ -74,7 +75,10 @@ export default function Cart() {
         barStyle="light-content"
       />
       {!cart || size(cart) === 0 ? (
-        <CartNoProducts />
+        <>
+          <Search />
+          <CartNoProducts />
+        </>
       ) : (
         // KeyboardAwareScrollView: genera espacio ente el view y el teclado en formularios
         <KeyboardAwareScrollView extraScrollHeight={25}>
