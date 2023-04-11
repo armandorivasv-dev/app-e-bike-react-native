@@ -1,6 +1,6 @@
 # E-BIKE - App Mobil Ecommerce
 
-## Desarrollada con React Native y Strapi
+## Desarrollada con React Native, Strapi (backend) y Stripe (Sistema de pagos)
 
 ## _Descripción_
 
